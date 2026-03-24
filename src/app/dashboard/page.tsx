@@ -10,7 +10,7 @@ import XPBar from "@/components/XPBar";
 import AchievementToast from "@/components/AchievementToast";
 import {
   getProfile, getActiveDomain, getDomainProgress,
-  getStreak, updateStreak, getXP, addXP, checkAchievements,
+  updateStreak, getXP, addXP, checkAchievements,
   Achievement, XPData,
 } from "@/lib/store";
 import { FeedItem } from "@/lib/content-fetcher";
