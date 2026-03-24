@@ -7,6 +7,7 @@ const sourceConfig: Record<string, { color: string; bg: string; label: string }>
   reddit: { color: "#ff6b35", bg: "rgba(255, 107, 53, 0.1)", label: "Reddit" },
   hackernews: { color: "#ff9f0a", bg: "rgba(255, 159, 10, 0.1)", label: "Hacker News" },
   devto: { color: "#30d158", bg: "rgba(48, 209, 88, 0.1)", label: "DEV" },
+  news: { color: "#0a84ff", bg: "rgba(10, 132, 255, 0.1)", label: "News" },
 };
 
 function timeAgo(dateStr: string): string {

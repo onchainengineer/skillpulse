@@ -7,7 +7,7 @@ import { getActiveDomain, getProfile } from "@/lib/store";
 import { FeedItem } from "@/lib/content-fetcher";
 
 type SortType = "engagement" | "recent";
-type SourceFilter = "all" | "reddit" | "hackernews" | "devto";
+type SourceFilter = "all" | "reddit" | "hackernews" | "devto" | "news";
 
 export default function Feed() {
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function Feed() {
     const params = new URLSearchParams({
       subreddits: domain.subreddits.join(","), hnTags: domain.hnTags.join(","),
       devtoTags: domain.devtoTags.join(","), sort, source, lang,
+      domain: domain.name,
     });
     fetch(`/api/feed?${params}`)
       .then((r) => r.json())
@@ -89,7 +90,7 @@ export default function Feed() {
           ))}
         </div>
         <div className="flex p-[3px] rounded-xl" style={{ background: "rgba(28,28,30,0.8)", border: "1px solid rgba(255,255,255,0.04)" }}>
-          {(["all", "reddit", "hackernews", "devto"] as SourceFilter[]).map((s) => (
+          {(["all", "reddit", "hackernews", "devto", "news"] as SourceFilter[]).map((s) => (
             <button
               key={s}
               onClick={() => setSource(s)}
@@ -99,7 +100,7 @@ export default function Feed() {
                 color: source === s ? "white" : "#86868b",
               }}
             >
-              {s === "all" ? "All" : s === "hackernews" ? "HN" : s === "devto" ? "DEV" : "Reddit"}
+              {s === "all" ? "All" : s === "hackernews" ? "HN" : s === "devto" ? "DEV" : s === "news" ? "News" : "Reddit"}
             </button>
           ))}
         </div>

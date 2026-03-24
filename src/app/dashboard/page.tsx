@@ -51,6 +51,7 @@ export default function Dashboard() {
       devtoTags: domain.devtoTags.join(","),
       sort: "engagement",
       lang: profile.language || "en",
+      domain: domain.name,
     });
     fetch(`/api/feed?${params}`)
       .then((r) => r.json())
