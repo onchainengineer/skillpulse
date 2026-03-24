@@ -6,6 +6,7 @@ export interface UserProfile {
   projects: string;
   onboarded: boolean;
   dailyGoal: number; // articles per day
+  language: string; // preferred language code e.g. "en", "hi", "es"
 }
 
 export interface ActiveDomain {
@@ -58,7 +59,7 @@ export function getProfile(): UserProfile | null {
   const raw = localStorage.getItem(PROFILE_KEY);
   if (!raw) return null;
   const p = JSON.parse(raw);
-  return { dailyGoal: 5, ...p };
+  return { dailyGoal: 5, language: "en", ...p };
 }
 
 export function saveProfile(profile: UserProfile) {

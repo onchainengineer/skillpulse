@@ -17,11 +17,13 @@ export default function Feed() {
   const [source, setSource] = useState<SourceFilter>("all");
   const [domain, setDomain] = useState<ReturnType<typeof getActiveDomain>>(null);
   const [ready, setReady] = useState(false);
+  const [lang, setLang] = useState("en");
 
   useEffect(() => {
     const p = getProfile();
     if (!p?.onboarded) { router.replace("/onboarding"); return; }
     setDomain(getActiveDomain());
+    setLang(p.language || "en");
     setReady(true);
   }, [router]);
 
@@ -30,14 +32,14 @@ export default function Feed() {
     setLoading(true);
     const params = new URLSearchParams({
       subreddits: domain.subreddits.join(","), hnTags: domain.hnTags.join(","),
-      devtoTags: domain.devtoTags.join(","), sort, source,
+      devtoTags: domain.devtoTags.join(","), sort, source, lang,
     });
     fetch(`/api/feed?${params}`)
       .then((r) => r.json())
       .then((data) => setItems(data.items || []))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [sort, source, domain, ready, router]);
+  }, [sort, source, domain, ready, lang, router]);
 
   if (!domain) {
     return (

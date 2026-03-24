@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import XPBar from "@/components/XPBar";
 import DailyGoalRing from "@/components/DailyGoalRing";
+import { LANGUAGES } from "@/lib/languages";
 import {
-  getProfile, getActiveDomain, getBookmarks, getDomainHistory,
+  getProfile, saveProfile, getActiveDomain, getBookmarks, getDomainHistory,
   getStreak, clearActiveDomain, addToHistory, getXP, getAchievements, getAllAchievementDefs,
   BookmarkedItem, DomainHistory, ActiveDomain, UserProfile, XPData, Achievement,
 } from "@/lib/store";
@@ -217,8 +218,36 @@ export default function Profile() {
         )
       )}
 
-      {/* Interests */}
+      {/* Language */}
       <div className="mt-6 mb-4">
+        <h2 className="text-[13px] font-medium text-[#86868b] uppercase tracking-wider mb-2.5">Language</h2>
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          {LANGUAGES.map((l) => {
+            const active = profile.language === l.code;
+            return (
+              <button
+                key={l.code}
+                onClick={() => {
+                  const updated = { ...profile, language: l.code };
+                  saveProfile(updated);
+                  setProfile(updated);
+                }}
+                className="shrink-0 px-3 py-2 rounded-xl text-[12px] font-medium press-scale transition-all"
+                style={{
+                  background: active ? "rgba(10,132,255,0.12)" : "rgba(28,28,30,0.8)",
+                  border: `1px solid ${active ? "rgba(10,132,255,0.4)" : "rgba(255,255,255,0.06)"}`,
+                  color: active ? "#0a84ff" : "#86868b",
+                }}
+              >
+                {l.flag} {l.name}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Interests */}
+      <div className="mb-4">
         <h2 className="text-[13px] font-medium text-[#86868b] uppercase tracking-wider mb-2.5">Interests</h2>
         <div className="flex flex-wrap gap-2">
           {profile.interests.map((interest) => (

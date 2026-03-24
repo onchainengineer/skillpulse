@@ -5,6 +5,7 @@ import {
   fetchDevToPosts,
   FeedItem,
 } from "@/lib/content-fetcher";
+import { getLanguageByCode } from "@/lib/languages";
 
 export async function GET(req: NextRequest) {
   const params = req.nextUrl.searchParams;
@@ -13,10 +14,16 @@ export async function GET(req: NextRequest) {
   const devtoTags = params.get("devtoTags")?.split(",").filter(Boolean) || [];
   const sortBy = params.get("sort") || "engagement";
   const sourceFilter = params.get("source") || "all";
+  const language = params.get("lang") || "en";
+
+  // Add language-specific subreddits
+  const lang = getLanguageByCode(language);
+  const allSubreddits = [...subreddits, ...lang.subredditSuffixes];
+  const allHnTags = [...hnTags, ...lang.searchTerms];
 
   const [reddit, hn, devto] = await Promise.all([
-    subreddits.length > 0 ? fetchRedditPosts(subreddits) : [],
-    hnTags.length > 0 ? fetchHNStories(hnTags) : [],
+    allSubreddits.length > 0 ? fetchRedditPosts(allSubreddits) : [],
+    allHnTags.length > 0 ? fetchHNStories(allHnTags) : [],
     devtoTags.length > 0 ? fetchDevToPosts(devtoTags) : [],
   ]);
 

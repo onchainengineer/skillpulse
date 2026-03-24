@@ -43,20 +43,21 @@ export default function Dashboard() {
   }, [router]);
 
   useEffect(() => {
-    if (!domain) return;
+    if (!domain || !profile) return;
     setLoading(true);
     const params = new URLSearchParams({
       subreddits: domain.subreddits.join(","),
       hnTags: domain.hnTags.join(","),
       devtoTags: domain.devtoTags.join(","),
       sort: "engagement",
+      lang: profile.language || "en",
     });
     fetch(`/api/feed?${params}`)
       .then((r) => r.json())
       .then((data) => setTopItems((data.items || []).slice(0, 5)))
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [domain]);
+  }, [domain, profile]);
 
   const handleArticleRead = useCallback(() => {
     const result = addXP(10);
